@@ -20,8 +20,10 @@ def main():
         input_number = input()
         if (input_number == "1"):
             print("1")
+            # do something
         if (input_number == "2"):
             print("2")
+            # do something
 
 if __name__ == "__main__":
     main()

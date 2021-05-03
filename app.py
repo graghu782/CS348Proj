@@ -31,3 +31,6 @@ def search():
 @app.route('/edit')
 def edit():
     return render_template('edit.html')
+
+if __name__ == "__main__":
+    app.run()

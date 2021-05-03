@@ -21,41 +21,34 @@
           <li class="active"><a href="#">Add Book</a></li>
           <li><a href="/browse">Browse</a></li>
         </ul>
-        <form class="navbar-form navbar-left" action="/search">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Find a book!">
-          </div>
-          <button type="submit" class="btn btn-default">Go!</button>
-        </form>
         <form class="navbar-form navbar-right" action="/">
           <button type="submit" class="btn btn-default">Log out</button>
         </form>
       </div>
     </nav>
-
     <div class="container">
       <div class="row">
         <div class="col-md-6 active bg-primary">
-          <form>
+          <form method="POST">
             <div class="form-group">
               <label for="bookName">Book Title</label>
-              <input type="name" class="form-control" id="bookName" placeholder="Enter book name">
+              <input name="bookName" type="name" class="form-control" id="bookName" placeholder="Enter book name">
             </div>
             <div class="form-group">
               <label for="bookIsbn">ISBN</label>
-              <input type="name" class="form-control" id="bookIsbn" placeholder="Enter ISBN">
+              <input name="bookIsbn" type="name" class="form-control" id="bookIsbn" placeholder="Enter ISBN">
             </div>
             <div class="form-group">
               <label for="bookDate">Published Date</label>
-              <input type="name" class="form-control" id="bookDate" placeholder="Enter publised date">
+              <input name="bookDate" type="name" class="form-control" id="bookDate" placeholder="Enter publised date">
             </div>
             <div class="form-group">
               <label for="bookPublisher">Publisher</label>
-              <input type="name" class="form-control" id="bookPublisher" placeholder="Enter publisher">
+              <input name="bookPublisher" type="name" class="form-control" id="bookPublisher" placeholder="Enter publisher">
             </div>
             <div class="form-group">
               <label for="bookReview">Review</label>
-              <input type="name" class="form-control" id="bookReview" placeholder="Write book review">
+              <input name="bookReview" type="name" class="form-control" id="bookReview" placeholder="Write book review">
             </div>
             <button type="submit" class="btn btn-success">Add Book</button>
           </form>

@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+import sqlite3
+from flask import Flask, render_template, request, url_for, flash, redirect
+from werkzeug.exceptions import abort
 
 app = Flask(__name__)
 
@@ -16,8 +18,44 @@ def index():
 def home():
     return render_template('home.html')
 
+@app.route('/home', methods = ['POST'])
+def login_verification():
+    # TODO if request.form length = 2 then check login against database
+    # else create new person on database
+    # For logins
+    # request.form['email']
+    # request.form['password']
+    # For Signups
+    # request.form['fname']
+    # request.form['lname']
+    # request.form['email']
+    # request.form['password']
+
+    print(request.form)
+
+    # only return this if login is verified OR if signup
+    return render_template('home.html')
+
 @app.route('/add')
 def add():
+    return render_template('add.html')
+
+@app.route('/add', methods = ['POST'])
+def add_book():
+    bookName = request.form['bookName']
+    bookIsbn = request.form['bookIsbn']
+    bookDate = request.form['bookDate']
+    bookPublisher = request.form['bookPublisher']
+    bookReview = request.form['bookReview']
+
+    print(bookName)
+    print(bookIsbn)
+    print(bookDate)
+    print(bookPublisher)
+    print(bookReview)
+
+    # TODO create a new database entry 
+
     return render_template('add.html')
 
 @app.route('/browse')

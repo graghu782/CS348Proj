@@ -22,16 +22,20 @@ def home():
 def login_verification():
     # TODO if request.form length = 2 then check login against database
     # else create new person on database
-    # For logins
-    # request.form['email']
-    # request.form['password']
-    # For Signups
-    # request.form['fname']
-    # request.form['lname']
-    # request.form['email']
-    # request.form['password']
-
-    print(request.form)
+    verifiedflag = False
+    if (len(request.form) == 2): 
+        #existing user
+        #check login details with users database
+        newemail = request.form['email']
+        newpassword = request.form['password']
+    else:
+        #add new user
+        firstname = request.form['fname']
+        email = request.form['email']
+        lastname = request.form['lname']
+        password = request.form['password']
+    
+        # add new user to database
 
     # only return this if login is verified OR if signup
     return render_template('home.html')

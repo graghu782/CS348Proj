@@ -1,0 +1,8 @@
+.vscode/settings.json
+__pycache__/app.cpython-37.pyc
+__pycache__/app.cpython-39.pyc
+.idea/CS348Proj.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml

@@ -34,7 +34,6 @@
           <table class="table table-dark">
             <thead>
               <tr>
-                <th scope="col">book id</th>
                 <th scope="col">title</th>
                 <th scope="col">isbn</th>
                 <th scope="col">published date</th>
@@ -51,10 +50,12 @@
                 <td>{{ post[2] }}</td>
                 <td>{{ post[3] }}</td>
                 <td>{{ post[4] }}</td>
-                <td>{{ post[5] }}</td>
-              </tr>
+                <td><form method="POST">
+                  <input type=hidden value="{{ post[5] }}" name=to_delete />
+                  <input type=submit value="Delete"/>
+                </form></td>
+                </tr>
               {% endfor %}
-              {% endblock %}
               <!-- <tr>
                 <th scope="row">2</th>
                 <td>Jacob</td>
@@ -75,6 +76,8 @@
               </tr> -->
             </tbody>
           </table>
+          <h4>Total Reviews : {{ total }}</h4>
+          {% endblock %}
         </div>
 
         <!-- <div class="col-md-6">

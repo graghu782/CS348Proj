@@ -25,20 +25,23 @@ def index():
 @app.route('/home')
 def home():
     global currentUserId
-    print("HOME: " + str(currentUserId))
+    if (currentUserId == -1):
+        return render_template('index.html')
     cnx = get_db_connection()
     query = "select * from book natural join reviewrel natural join review where reader_id = " + str(currentUserId) + ";"
     cursor = cnx.cursor()
     cursor.execute(query)
     posts = []
-    print("HOME")
     for (review_id, bookid, title, isbn, published_date, publisher, reader_id, rating, review) in cursor:
-        posts.append([bookid, title, isbn, published_date, publisher, review])
+        posts.append([title, isbn, published_date, publisher, review])
 
-
+    query = "select count(*) as cnt from book natural join reviewrel natural join review where reader_id = " + str(currentUserId) + ";"
+    cursor.execute(query)
+    total = cursor.fetchall()[0][0]
     cursor.close()
+
     cnx.close()
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts, total=total)
 
 @app.route('/home', methods = ['POST'])
 def login_verification():
@@ -48,7 +51,20 @@ def login_verification():
     cnx = get_db_connection()
     cursor = cnx.cursor()
     verifiedflag = False
-    if (len(request.form) == 2): 
+
+    if "to_delete" in request.form:
+        if currentUserId == -1:
+            return render_template('index.html')
+        query = "select review_id from review where review=\"" + request.form['to_delete'] + "\";"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        review_id = result[0][0]
+        query = "DELETE FROM reviewrel WHERE review_id=" + str(review_id) + ";"
+        cursor.execute(query)
+        query = "DELETE FROM review WHERE review_id=" + str(review_id) + ";"
+        cursor.execute(query)
+        cnx.commit()
+    elif (len(request.form) == 2): 
         #existing user
         #check login details with users database
         newemail = request.form['email']
@@ -56,13 +72,10 @@ def login_verification():
         query = "SELECT * FROM reader WHERE email = \"" + newemail + "\";"
         cursor.execute(query)
         result = cursor.fetchall()
-        print(type(result))
         if len(result) == 0:
             return render_template('index.html')
         else:
             currentUserId = result[0][0]
-            # currentUserId = result[0]["reader_id"]
-            # print(currentUserId)
     else:
         #add new user
         firstname = request.form['fname']
@@ -71,7 +84,6 @@ def login_verification():
         password = request.form['password']
     
         # add new user to database
-    print("reader is " + str(currentUserId))
     # only return this if login is verified OR if signup
     cursor.close()
     cnx.close()
@@ -84,6 +96,8 @@ def add():
 @app.route('/add', methods = ['POST'])
 def add_book():
     global currentUserId
+    if currentUserId == -1:
+        return render_template('index.html')
     bookName = request.form['bookName']
     bookIsbn = request.form['bookIsbn']
     bookDate = request.form['bookDate']
@@ -99,7 +113,7 @@ def add_book():
     book_data = (bookName, bookIsbn, bookDate, bookPublisher)
     cursor.execute(add_book_query, book_data)
 
-    get_book_id = "SELECT book_id FROM book where isbn = " + bookIsbn + ";"
+    get_book_id = "SELECT book_id FROM book where isbn=\"" + bookIsbn + "\";"
     cursor.execute(get_book_id)
     result = cursor.fetchall()
     bookId = result[0][0]
@@ -128,8 +142,22 @@ def add_book():
 
 @app.route('/browse')
 def browse():
+    cnx = get_db_connection()
+    query = "select * from book;"
+    cursor = cnx.cursor()
+    cursor.execute(query)
 
-    return render_template('browse.html')
+    posts = []
+    for (book_id, title, isbn, published_date, publisher) in cursor:
+        posts.append([title, isbn, published_date, publisher])
+
+    query = "select count(*) as cnt from book;"
+    cursor.execute(query)
+    total = cursor.fetchall()[0][0]
+    cursor.close()
+
+    cnx.close()
+    return render_template('browse.html', posts=posts, total=total)
 
 @app.route('/search')
 def search():
